@@ -1,5 +1,6 @@
 import { requireUser } from "../../lib/session";
 import { getCommunity } from "../../lib/community";
+import { greekTitle } from "../../lib/greek";
 import TopBar from "../TopBar";
 import { sendFriendRequest, acceptRequest, removeFriendship } from "./actions";
 import "./community.css";
@@ -114,7 +115,9 @@ export default async function CommunityPage({
                   {person.name}
                   {person.isYou && <span className="com-you">You</span>}
                 </span>
-                <span className="com-sub">{person.totalXp.toLocaleString()} XP total</span>
+                <span className="com-sub">
+                  {greekTitle(person.rank)}, {person.totalXp.toLocaleString()} XP total
+                </span>
               </span>
               <span className="com-week">
                 <strong>+{person.weekXp.toLocaleString()} XP</strong>

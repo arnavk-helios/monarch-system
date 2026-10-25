@@ -8,18 +8,18 @@
   padding: 0.95rem 1.1rem;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--violet);
+  border-left: 3px solid var(--accent-2);
   border-radius: 3px;
 }
 
 .streak.extended {
-  border-left-color: var(--aqua);
-  background: linear-gradient(90deg, rgba(34, 229, 255, 0.1), var(--panel) 70%);
+  border-left-color: var(--accent);
+  background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.1), var(--panel) 70%);
 }
 
 .streak.recovery {
-  border-left-color: #ffc46b;
-  background: linear-gradient(90deg, rgba(255, 196, 107, 0.1), var(--panel) 70%);
+  border-left-color: var(--bronze);
+  background: linear-gradient(90deg, rgba(var(--bronze-rgb), 0.1), var(--panel) 70%);
 }
 
 .streak-count {
@@ -31,11 +31,11 @@
 .streak-count strong {
   font-size: 1.9rem;
   line-height: 1;
-  color: var(--aqua);
+  color: var(--accent);
 }
 
 .streak.recovery .streak-count strong {
-  color: #ffc46b;
+  color: var(--bronze);
 }
 
 .streak-count span {
@@ -68,16 +68,28 @@
   padding: 2rem 1.5rem;
   text-align: center;
   background: linear-gradient(135deg, var(--panel-2), var(--panel));
-  border: 1px solid rgba(34, 229, 255, 0.45);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
   border-radius: 4px;
-  box-shadow: 0 0 60px rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 60px rgba(var(--accent-2-rgb), 0.35);
   animation: rankup-rise 0.6s ease both;
 }
 
-.rankup-card .emblem-wrap {
+.rankup-emblem {
   display: flex;
   justify-content: center;
   margin-bottom: 1.25rem;
+}
+
+.rankup-card .emblem {
+  color: var(--bronze);
+  filter: drop-shadow(0 0 22px rgba(var(--bronze-rgb), 0.4));
+}
+
+.rankup-sub {
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: var(--dim);
 }
 
 .rankup-kicker {
@@ -87,15 +99,17 @@
 }
 
 .rankup-card h2 {
-  margin: 0.25rem 0 0.5rem;
-  font-size: 1.7rem;
+  margin: 0.25rem 0 0.25rem;
+  font-family: var(--font-cinzel), serif;
+  font-size: 2.1rem;
+  letter-spacing: 0.04em;
 }
 
 .rankup-bonus {
   margin: 0 0 1.5rem;
   font-weight: 700;
-  color: var(--aqua);
-  text-shadow: 0 0 12px rgba(34, 229, 255, 0.6);
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
 }
 
 .rankup-btn {
@@ -104,13 +118,13 @@
   font-weight: 700;
   color: var(--void);
   text-decoration: none;
-  background: linear-gradient(90deg, var(--violet), var(--aqua));
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
   border-radius: 3px;
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 18px rgba(var(--accent-2-rgb), 0.35);
 }
 
 .rankup-btn:focus-visible {
-  outline: 2px solid var(--aqua);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 

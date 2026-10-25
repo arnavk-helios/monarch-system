@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "../../lib/auth-client";
+import RankEmblem from "../RankEmblem";
 import "./login.css";
 
 type Mode = "signin" | "signup";
@@ -48,15 +49,7 @@ export default function LoginPage() {
     <main className="auth-shell">
       <div className="auth-card">
         <div className="auth-emblem">
-          <div className="emblem-wrap">
-            <div className="emblem">
-              <div className="emblem-inner">
-                <span className="emblem-letter" style={{ fontSize: "2.6rem" }}>
-                  E
-                </span>
-              </div>
-            </div>
-          </div>
+          <RankEmblem name="E" size={104} />
         </div>
 
         <h1>{isSignup ? "Create your account" : "Sign in"}</h1>

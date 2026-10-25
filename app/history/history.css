@@ -19,12 +19,12 @@
 }
 
 .nav a[aria-current="page"] {
-  color: var(--aqua);
-  border-bottom-color: var(--aqua);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .nav a:focus-visible {
-  outline: 2px solid var(--aqua);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -41,7 +41,7 @@
   padding: 0.9rem 1rem;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--violet);
+  border-left: 3px solid var(--accent-2);
   border-radius: 3px;
 }
 
@@ -54,7 +54,7 @@
   margin: 0.25rem 0 0;
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--aqua);
+  color: var(--accent);
 }
 
 /* Panels */
@@ -79,7 +79,7 @@
 }
 
 .empty a {
-  color: var(--aqua);
+  color: var(--accent);
 }
 
 /* Heatmap: 12 weeks, each column is one week (Monday at the top) */
@@ -103,20 +103,20 @@
 }
 
 .cell.lvl-1 {
-  background: rgba(168, 85, 247, 0.35);
+  background: rgba(var(--accent-2-rgb), 0.35);
 }
 
 .cell.lvl-2 {
-  background: rgba(168, 85, 247, 0.8);
+  background: rgba(var(--accent-2-rgb), 0.8);
 }
 
 .cell.lvl-3 {
-  background: rgba(34, 229, 255, 0.6);
+  background: rgba(var(--accent-rgb), 0.6);
 }
 
 .cell.lvl-4 {
-  background: var(--aqua);
-  box-shadow: 0 0 10px rgba(34, 229, 255, 0.6);
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
 }
 
 .cell.future {
@@ -165,9 +165,9 @@
 
 .bar-col-fill {
   width: 100%;
-  background: linear-gradient(0deg, var(--violet), var(--aqua));
+  background: linear-gradient(0deg, var(--accent-2), var(--accent));
   border-radius: 2px 2px 0 0;
-  box-shadow: 0 0 8px rgba(34, 229, 255, 0.35);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.35);
   transition: height 0.6s ease;
 }
 
@@ -217,7 +217,7 @@
 
 .recent-xp {
   font-weight: 600;
-  color: var(--aqua);
+  color: var(--accent);
 }
 
 @media (max-width: 620px) {
@@ -233,4 +233,22 @@
     grid-column: 1 / -1;
     grid-row: 2;
   }
+}
+
+/* Marble ramp for the heatmap: darker is quieter, brighter is a stronger day */
+.cell.lvl-1 {
+  background: rgba(var(--accent-rgb), 0.16);
+}
+
+.cell.lvl-2 {
+  background: rgba(var(--accent-rgb), 0.36);
+}
+
+.cell.lvl-3 {
+  background: rgba(var(--accent-rgb), 0.62);
+}
+
+.cell.lvl-4 {
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
 }

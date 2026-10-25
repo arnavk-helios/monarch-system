@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "../lib/prisma";
 import { getUserStats, toDateOnly } from "../lib/xp";
 import { getStreakInfo } from "../lib/streak";
+import { greekTitle } from "../lib/greek";
+import RankEmblem from "./RankEmblem";
 import { requireUser } from "../lib/session";
 import { toggleQuest } from "./actions";
 import TopBar from "./TopBar";
@@ -84,22 +86,12 @@ export default async function Home({
       <TopBar active="quests" />
 
       <section className="status" aria-label="Your rank">
-        <div className="emblem-wrap">
-          <div className="emblem">
-            <div className="emblem-inner">
-              <span
-                className="emblem-letter"
-                style={{ fontSize: rank.current.name.length > 2 ? "1.05rem" : "2.6rem" }}
-              >
-                {rank.current.name}
-              </span>
-            </div>
-          </div>
-        </div>
+        <RankEmblem name={rank.current.name} size={116} />
 
         <div className="status-body">
           <p className="hunter">{user.name}</p>
-          <p className="rank-title">Rank {rank.current.name}</p>
+          <p className="rank-title">{greekTitle(rank.current.name)}</p>
+          <p className="rank-label">Rank {rank.current.name}</p>
           <div
             className="bar"
             role="progressbar"
@@ -184,20 +176,12 @@ export default async function Home({
       {rankUp && (
         <div className="rankup" role="dialog" aria-modal="true" aria-labelledby="rankup-title">
           <div className="rankup-card">
-            <div className="emblem-wrap">
-              <div className="emblem">
-                <div className="emblem-inner">
-                  <span
-                    className="emblem-letter"
-                    style={{ fontSize: rankUp.name.length > 2 ? "1.05rem" : "2.6rem" }}
-                  >
-                    {rankUp.name}
-                  </span>
-                </div>
-              </div>
+            <div className="rankup-emblem">
+              <RankEmblem name={rankUp.name} size={150} />
             </div>
             <p className="rankup-kicker">Rank up</p>
-            <h2 id="rankup-title">Rank {rankUp.name} reached</h2>
+            <h2 id="rankup-title">{greekTitle(rankUp.name)}</h2>
+            <p className="rankup-sub">Rank {rankUp.name} reached</p>
             <p className="rankup-bonus">+{rankUp.xp} XP bonus</p>
             <Link href="/" className="rankup-btn">
               Continue
