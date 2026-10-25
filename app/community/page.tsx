@@ -1,8 +1,8 @@
 import { requireUser } from "../../lib/session";
-import { getCommunity } from "../../lib/community";
+import { getCommunity, timeAgo } from "../../lib/community";
 import { greekTitle } from "../../lib/greek";
 import TopBar from "../TopBar";
-import { sendFriendRequest, acceptRequest, removeFriendship } from "./actions";
+import { sendFriendRequest, acceptRequest, removeFriendship, sendCheer } from "./actions";
 import "./community.css";
 
 // Always fetch fresh numbers from the database.
@@ -23,7 +23,7 @@ export default async function CommunityPage({
 }) {
   const user = await requireUser();
   const { notice } = await searchParams;
-  const { network, incoming, outgoing } = await getCommunity(user.id);
+  const { network, incoming, outgoing, feed } = await getCommunity(user.id);
 
   const friendCount = network.length - 1;
 
@@ -136,6 +136,55 @@ export default async function CommunityPage({
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="com-panel" aria-labelledby="feed-title">
+        <h2 id="feed-title" className="com-title">
+          Rank-ups
+        </h2>
+        {feed.length === 0 ? (
+          <p className="com-empty">
+            When you or a friend reaches a new rank, it shows up here, and you can send a congratulation.
+          </p>
+        ) : (
+          <ul className="com-feed">
+            {feed.map((item) => (
+              <li key={item.id} className="com-feed-item">
+                <div className="com-feed-main">
+                  <span className="com-chip">{item.rank}</span>
+                  <span className="com-who">
+                    <span className="com-name">
+                      {item.isYou ? "You" : item.userName} reached {greekTitle(item.rank)}
+                    </span>
+                    <span className="com-sub">
+                      Rank {item.rank}, {timeAgo(item.earnedAt)}
+                    </span>
+                  </span>
+                </div>
+                <div className="com-feed-cheer">
+                  {item.isYou ? (
+                    <span className="com-sub">
+                      {item.cheerCount === 0
+                        ? "No congratulations yet"
+                        : `${item.cheerers.slice(0, 3).join(", ")}${
+                            item.cheerCount > 3 ? ` and ${item.cheerCount - 3} more` : ""
+                          } congratulated you`}
+                    </span>
+                  ) : item.cheeredByMe ? (
+                    <span className="com-cheered">You congratulated them</span>
+                  ) : (
+                    <form action={sendCheer}>
+                      <input type="hidden" name="userAchievementId" value={item.id} />
+                      <button type="submit" className="com-btn small">
+                        Congratulate
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {outgoing.length > 0 && (

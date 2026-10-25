@@ -8,7 +8,7 @@ const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
-  title: "Monarch System",
+  title: "Ascend",
   description: "Complete daily quests, earn XP, and level up.",
 };
 

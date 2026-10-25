@@ -15,7 +15,7 @@ const LINKS = [
 export default function TopBar({ active }: Props) {
   return (
     <div className="topbar">
-      <span className="brand">Monarch System</span>
+      <span className="brand">Ascend</span>
       <nav className="nav">
         {LINKS.map((link) => (
           <Link

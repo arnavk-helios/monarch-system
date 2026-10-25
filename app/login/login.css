@@ -123,3 +123,24 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
+
+.auth-brand {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-cinzel), serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.auth-pledge {
+  margin: 0 0 1.25rem;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--dim);
+  background: rgba(var(--bronze-rgb), 0.06);
+  border-left: 2px solid var(--bronze);
+}

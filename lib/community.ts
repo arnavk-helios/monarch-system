@@ -21,6 +21,28 @@ export type NetworkRow = {
 
 export type RequestRow = { friendshipId: string; name: string };
 
+export type FeedItem = {
+  id: string; // the rank-up record, used when sending a congratulation
+  userName: string;
+  isYou: boolean;
+  rank: string;
+  earnedAt: Date;
+  cheerCount: number;
+  cheeredByMe: boolean;
+  cheerers: string[];
+};
+
+// "5 min ago", "3 h ago", "yesterday"
+export function timeAgo(date: Date): string {
+  const minutes = Math.round((Date.now() - date.getTime()) / 60000);
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} h ago`;
+  const days = Math.round(hours / 24);
+  return days === 1 ? "yesterday" : `${days} days ago`;
+}
+
 export async function getCommunity(userId: string) {
   const [links, ranks, me] = await Promise.all([
     prisma.friendship.findMany({
@@ -64,7 +86,7 @@ export async function getCommunity(userId: string) {
   const ids = people.map((p) => p.id);
   const weekStart = new Date(toDateOnly(new Date()).getTime() - 6 * DAY);
 
-  const [totals, weeks] = await Promise.all([
+  const [totals, weeks, rankUps] = await Promise.all([
     prisma.xpEvent.groupBy({
       by: ["userId"],
       where: { userId: { in: ids } },
@@ -74,6 +96,21 @@ export async function getCommunity(userId: string) {
       by: ["userId"],
       where: { userId: { in: ids }, date: { gte: weekStart } },
       _sum: { amount: true },
+    }),
+    // Rank-ups by you and your friends in the last 30 days
+    prisma.userAchievement.findMany({
+      where: {
+        userId: { in: ids },
+        earnedAt: { gte: new Date(Date.now() - 30 * DAY) },
+        achievement: { slug: { startsWith: "rank-up-" } },
+      },
+      orderBy: { earnedAt: "desc" },
+      take: 15,
+      include: {
+        user: { select: { name: true } },
+        achievement: { select: { name: true } },
+        cheers: { include: { from: { select: { name: true } } } },
+      },
     }),
   ]);
 
@@ -93,5 +130,16 @@ export async function getCommunity(userId: string) {
     })
     .sort((a, b) => b.weekXp - a.weekXp || b.totalXp - a.totalXp);
 
-  return { network, incoming, outgoing };
+  const feed: FeedItem[] = rankUps.map((entry) => ({
+    id: entry.id,
+    userName: entry.user.name ?? "A hunter",
+    isYou: entry.userId === userId,
+    rank: entry.achievement.name.replace("Rank Up: ", ""),
+    earnedAt: entry.earnedAt,
+    cheerCount: entry.cheers.length,
+    cheeredByMe: entry.cheers.some((c) => c.fromUserId === userId),
+    cheerers: entry.cheers.map((c) => c.from.name ?? "A friend"),
+  }));
+
+  return { network, incoming, outgoing, feed };
 }

@@ -76,3 +76,35 @@ export async function removeFriendship(formData: FormData) {
   });
   revalidatePath("/community");
 }
+
+// Send a congratulation for a friend's rank-up. One per person per rank-up.
+export async function sendCheer(formData: FormData) {
+  const me = await requireUser();
+  const userAchievementId = String(formData.get("userAchievementId"));
+
+  const target = await prisma.userAchievement.findUnique({
+    where: { id: userAchievementId },
+    include: { achievement: { select: { slug: true } } },
+  });
+
+  // Only rank-ups, never your own, and only from accepted friends.
+  if (!target || target.userId === me.id) return;
+  if (!target.achievement.slug.startsWith("rank-up-")) return;
+
+  const friendship = await prisma.friendship.findFirst({
+    where: {
+      status: "ACCEPTED",
+      OR: [
+        { requesterId: me.id, addresseeId: target.userId },
+        { requesterId: target.userId, addresseeId: me.id },
+      ],
+    },
+  });
+  if (!friendship) return;
+
+  await prisma.cheer.createMany({
+    data: [{ fromUserId: me.id, userAchievementId }],
+    skipDuplicates: true,
+  });
+  revalidatePath("/community");
+}

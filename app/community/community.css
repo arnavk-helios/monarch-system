@@ -226,3 +226,53 @@
     flex-direction: column;
   }
 }
+
+/* Rank-up feed */
+
+.com-feed {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.com-feed-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.com-feed-item:last-child {
+  border-bottom: 0;
+}
+
+.com-feed-main {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.com-feed-cheer {
+  flex: none;
+  text-align: right;
+}
+
+.com-cheered {
+  font-size: 0.85rem;
+  color: var(--accent-2);
+}
+
+@media (max-width: 560px) {
+  .com-feed-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .com-feed-cheer {
+    text-align: left;
+  }
+}

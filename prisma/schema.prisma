@@ -29,6 +29,7 @@ model User {
   bossResults  UserBossResult[]
   sentRequests     Friendship[] @relation("FriendRequester")
   receivedRequests Friendship[] @relation("FriendAddressee")
+  cheersSent Cheer[] @relation("CheerFrom")
 }
 
 // ---------- GAME CONTENT (filled by the seed file) ----------
@@ -125,6 +126,7 @@ model UserAchievement {
   achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
 
   @@unique([userId, achievementId])
+  cheers Cheer[]
 }
 
 model UserBossResult {
@@ -200,4 +202,17 @@ model Friendship {
   // One request per pair, per direction
   @@unique([requesterId, addresseeId])
   @@index([addresseeId])
+}
+model Cheer {
+  id                String   @id @default(cuid())
+  fromUserId        String
+  userAchievementId String
+  createdAt         DateTime @default(now())
+
+  from            User            @relation("CheerFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  userAchievement UserAchievement @relation(fields: [userAchievementId], references: [id], onDelete: Cascade)
+
+  // One congratulation per person per rank-up
+  @@unique([fromUserId, userAchievementId])
+  @@index([userAchievementId])
 }
