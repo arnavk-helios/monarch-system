@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../lib/prisma";
-import { getUserStats, toDateOnly } from "../lib/xp";
+import { getUserStats, todayIn } from "../lib/xp";
+import { getTimeZone } from "../lib/timezone";
 import { getStreakInfo } from "../lib/streak";
 import { greekTitle } from "../lib/greek";
 import RankEmblem from "./RankEmblem";
@@ -24,18 +25,19 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ rankup?: string }>;
+  searchParams: Promise<{ rankup?: string; welcome?: string }>;
 }) {
   // Not signed in? This sends the visitor to /login.
   const user = await requireUser();
-  const today = toDateOnly(new Date());
-  const { rankup } = await searchParams;
+  const timeZone = await getTimeZone();
+  const today = todayIn(timeZone);
+  const { rankup, welcome } = await searchParams;
 
   const [quests, logs, stats, streak] = await Promise.all([
     prisma.quest.findMany({ where: { active: true }, orderBy: { sortOrder: "asc" } }),
     prisma.questLog.findMany({ where: { userId: user.id, date: today } }),
     getUserStats(user.id),
-    getStreakInfo(user.id),
+    getStreakInfo(user.id, timeZone),
   ]);
 
   // Show the rank-up screen only if you really earned that rank in the last 10 minutes.
@@ -84,6 +86,18 @@ export default async function Home({
   return (
     <main className="shell">
       <TopBar active="quests" />
+
+      {welcome && (
+        <section className="honor" aria-label="A reminder">
+          <p className="honor-text">
+            Play honest. Log only what you truly did. Cheating the board only cheats you, so be
+            real with yourself and the climb will be real too.
+          </p>
+          <Link href="/" className="honor-btn">
+            I will
+          </Link>
+        </section>
+      )}
 
       <section className="status" aria-label="Your rank">
         <RankEmblem name={rank.current.name} size={116} />

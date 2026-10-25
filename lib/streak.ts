@@ -4,7 +4,7 @@
 // One missed day does NOT break your streak. Two missed days in a row do.
 
 import { prisma } from "./prisma";
-import { addDays, dayKey, toDateOnly, RECOVERY_BONUS } from "./xp";
+import { addDays, dayKey, todayIn, RECOVERY_BONUS } from "./xp";
 
 export type StreakState =
   | "none" // no streak right now
@@ -12,8 +12,8 @@ export type StreakState =
   | "recovery" // you missed yesterday: do not miss twice
   | "extended"; // you already played today
 
-export async function getStreakInfo(userId: string) {
-  const today = toDateOnly(new Date());
+export async function getStreakInfo(userId: string, timeZone = "UTC") {
+  const today = todayIn(timeZone);
 
   const [days, recovery] = await Promise.all([
     prisma.questLog.groupBy({

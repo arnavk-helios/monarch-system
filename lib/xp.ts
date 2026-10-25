@@ -20,6 +20,22 @@ export function toDateOnly(date: Date): Date {
   );
 }
 
+// "Today" as a plain date in the player's own time zone.
+// (A player in Pune and a server in London can disagree about the date.)
+export function todayIn(timeZone: string, now: Date = new Date()): Date {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+      .formatToParts(now)
+      .map((part) => [part.type, part.value])
+  );
+  return new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
+}
+
 export function addDays(date: Date, days: number): Date {
   return new Date(date.getTime() + days * DAY);
 }
@@ -33,9 +49,9 @@ export function dayKey(date: Date): string {
 export async function completeQuest(
   userId: string,
   questId: string,
-  when: Date = new Date()
+  timeZone: string = "UTC"
 ) {
-  const date = toDateOnly(when);
+  const date = todayIn(timeZone);
   const quest = await prisma.quest.findUniqueOrThrow({ where: { id: questId } });
 
   try {
@@ -98,9 +114,9 @@ export async function completeQuest(
 export async function uncompleteQuest(
   userId: string,
   questId: string,
-  when: Date = new Date()
+  timeZone: string = "UTC"
 ) {
-  const date = toDateOnly(when);
+  const date = todayIn(timeZone);
 
   const [logs] = await prisma.$transaction([
     prisma.questLog.deleteMany({ where: { userId, questId, date } }),

@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "../lib/auth";
 import { requireUser } from "../lib/session";
 import { completeQuest, uncompleteQuest } from "../lib/xp";
+import { getTimeZone } from "../lib/timezone";
 
 export async function toggleQuest(formData: FormData) {
   const questId = String(formData.get("questId"));
@@ -19,12 +20,13 @@ export async function toggleQuest(formData: FormData) {
   // Only a signed-in player can tick quests.
   const user = await requireUser();
 
+  const timeZone = await getTimeZone();
   let rankUpTo: string | null = null;
 
   if (wasDone) {
-    await uncompleteQuest(user.id, questId);
+    await uncompleteQuest(user.id, questId, timeZone);
   } else {
-    const result = await completeQuest(user.id, questId);
+    const result = await completeQuest(user.id, questId, timeZone);
     const highest = result.rankUps[result.rankUps.length - 1];
     if (highest) rankUpTo = highest.rank;
   }

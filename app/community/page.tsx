@@ -1,6 +1,7 @@
 import { requireUser } from "../../lib/session";
 import { getCommunity, timeAgo } from "../../lib/community";
 import { greekTitle } from "../../lib/greek";
+import { getTimeZone } from "../../lib/timezone";
 import TopBar from "../TopBar";
 import { sendFriendRequest, acceptRequest, removeFriendship, sendCheer } from "./actions";
 import "./community.css";
@@ -23,7 +24,7 @@ export default async function CommunityPage({
 }) {
   const user = await requireUser();
   const { notice } = await searchParams;
-  const { network, incoming, outgoing, feed } = await getCommunity(user.id);
+  const { network, incoming, outgoing, feed } = await getCommunity(user.id, await getTimeZone());
 
   const friendCount = network.length - 1;
 

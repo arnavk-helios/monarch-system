@@ -5,7 +5,7 @@
 
 import { prisma } from "./prisma";
 import { getRankProgress } from "./ranks";
-import { toDateOnly } from "./xp";
+import { todayIn } from "./xp";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -43,7 +43,7 @@ export function timeAgo(date: Date): string {
   return days === 1 ? "yesterday" : `${days} days ago`;
 }
 
-export async function getCommunity(userId: string) {
+export async function getCommunity(userId: string, timeZone = "UTC") {
   const [links, ranks, me] = await Promise.all([
     prisma.friendship.findMany({
       where: { OR: [{ requesterId: userId }, { addresseeId: userId }] },
@@ -84,7 +84,7 @@ export async function getCommunity(userId: string) {
   ];
 
   const ids = people.map((p) => p.id);
-  const weekStart = new Date(toDateOnly(new Date()).getTime() - 6 * DAY);
+  const weekStart = new Date(todayIn(timeZone).getTime() - 6 * DAY);
 
   const [totals, weeks, rankUps] = await Promise.all([
     prisma.xpEvent.groupBy({

@@ -3,7 +3,7 @@
 // and turns them into numbers the History page can draw.
 
 import { prisma } from "./prisma";
-import { getTotalXp, toDateOnly } from "./xp";
+import { getTotalXp, todayIn } from "./xp";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -43,8 +43,8 @@ export type HeatCell = {
 export type BarDay = { key: string; label: string; xp: number };
 export type RecentDay = { key: string; label: string; xp: number; quests: string[] };
 
-export async function getHistory(userId: string) {
-  const today = toDateOnly(new Date());
+export async function getHistory(userId: string, timeZone = "UTC") {
+  const today = todayIn(timeZone);
 
   const [events, logs, questTotals, totalXp] = await Promise.all([
     prisma.xpEvent.findMany({

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "../../lib/session";
 import { getHistory } from "../../lib/history";
+import { getTimeZone } from "../../lib/timezone";
 import TopBar from "../TopBar";
 import "./history.css";
 
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export default async function HistoryPage() {
   const user = await requireUser();
-  const history = await getHistory(user.id);
+  const history = await getHistory(user.id, await getTimeZone());
 
   const tallestBar = Math.max(100, ...history.bars.map((bar) => bar.xp));
   const hasHistory = history.activeDays > 0;

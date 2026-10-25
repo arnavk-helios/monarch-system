@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Cinzel, Manrope } from "next/font/google";
 import "./globals.css";
+import TimezoneSync from "./TimezoneSync";
 
 // Anton: heavy poster headlines. Cinzel: carved-stone capitals. Manrope: body text.
 const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton" });
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body>
         <div className="pillar pillar-left" aria-hidden="true" />
         <div className="pillar pillar-right" aria-hidden="true" />
+        <TimezoneSync />
         {children}
       </body>
     </html>
