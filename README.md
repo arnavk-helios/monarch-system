@@ -2,7 +2,7 @@
 
 <h5>S Y S T E M &nbsp; I N I T I A L I Z E D</h5>
 
-# ⚔️ THE MONARCH SYSTEM
+# ⚔️ ASCEND
 
 ### Daily Discipline Protocol — now as a living, multiplayer app
 
@@ -19,7 +19,7 @@
 <br>
 
 <!-- Replace with a real screenshot or GIF once the UI exists -->
-<!-- <img src="docs/assets/hero.png" alt="Monarch System dashboard" width="720"> -->
+<!-- <img src="docs/assets/hero.png" alt="Ascend dashboard" width="720"> -->
 
 </div>
 
@@ -27,7 +27,7 @@
 
 ## 📜 What is this?
 
-**The Monarch System** turns self-improvement into a game you can't hide from.
+**Ascend** turns self-improvement into a game you can't hide from.
 
 Every day you complete **quests** (workout, sleep, reading, deep work, skincare, and more), earn **XP**, build **streaks**, and climb from **E-Rank** all the way to **Monarch**. Nothing is stored as a vague "total": every action is logged, so you get a full **history** of how you've grown over weeks and months.
 
@@ -187,7 +187,7 @@ Contributions are welcome, whether it's a new quest idea, a balance tweak, a bug
 
 ## ⚕️ Disclaimer
 
-The Monarch System is a personal habit-tracking and productivity framework for motivational and organizational purposes only. It is **not** medical, dietary, psychological, or fitness advice. Consult qualified professionals before starting any new exercise, nutrition, or wellness program, especially if you have a pre-existing health condition.
+Ascend is a personal habit-tracking and productivity framework for motivational and organizational purposes only. It is **not** medical, dietary, psychological, or fitness advice. Consult qualified professionals before starting any new exercise, nutrition, or wellness program, especially if you have a pre-existing health condition.
 
 ---
 
