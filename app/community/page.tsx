@@ -4,7 +4,6 @@ import { greekTitle } from "../../lib/greek";
 import { getTimeZone } from "../../lib/timezone";
 import TopBar from "../TopBar";
 import { sendFriendRequest, acceptRequest, removeFriendship, sendCheer } from "./actions";
-import "./community.css";
 
 // Always fetch fresh numbers from the database.
 export const dynamic = "force-dynamic";

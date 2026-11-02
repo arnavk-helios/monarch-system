@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { signOutAction } from "./actions";
-import "./topbar.css";
+import { LogoMark } from "./_landing/icons";
 
 type Props = { active: "quests" | "history" | "community" };
 
@@ -15,7 +15,9 @@ const LINKS = [
 export default function TopBar({ active }: Props) {
   return (
     <div className="topbar">
-      <span className="brand">Ascend</span>
+      <span className="brand">
+        <LogoMark className="mark" /> Ascend
+      </span>
       <nav className="nav">
         {LINKS.map((link) => (
           <Link
@@ -34,4 +36,4 @@ export default function TopBar({ active }: Props) {
       </form>
     </div>
   );
-} 
+}

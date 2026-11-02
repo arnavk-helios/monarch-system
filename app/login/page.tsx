@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "../../lib/auth-client";
 import RankEmblem from "../RankEmblem";
-import "./login.css";
 
 type Mode = "signin" | "signup";
 
@@ -36,7 +35,7 @@ export default function LoginPage() {
     }
 
     // Signed in: go to the quest board.
-    router.push("/");
+    router.push("/?welcome=1");
     router.refresh();
   }
 
@@ -52,11 +51,17 @@ export default function LoginPage() {
           <RankEmblem name="E" size={104} />
         </div>
 
+        <p className="auth-brand">Ascend</p>
         <h1>{isSignup ? "Create your account" : "Sign in"}</h1>
         <p className="auth-sub">
           {isSignup
             ? "Everyone starts at rank E."
             : "Pick up your quests where you left off."}
+        </p>
+
+        <p className="auth-pledge">
+          Ascend runs on honesty. Log only what you really did. Nobody is checking but you, and
+          that is the point. Be real with yourself.
         </p>
 
         <form onSubmit={handleSubmit}>

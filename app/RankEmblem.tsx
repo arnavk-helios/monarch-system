@@ -48,7 +48,7 @@ export default function RankEmblem({ name, size = 112 }: Props) {
             </g>
           ))}
         </g>
-        <circle cx="60" cy="60" r="33" fill="var(--panel)" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="60" cy="60" r="33" fill="var(--emblem-fill, #141414)" stroke="currentColor" strokeWidth="1.5" />
         <circle cx="60" cy="60" r="28.5" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.5" />
       </svg>
       <span

@@ -3,7 +3,6 @@ import { requireUser } from "../../lib/session";
 import { getHistory } from "../../lib/history";
 import { getTimeZone } from "../../lib/timezone";
 import TopBar from "../TopBar";
-import "./history.css";
 
 // Always fetch fresh numbers from the database.
 export const dynamic = "force-dynamic";

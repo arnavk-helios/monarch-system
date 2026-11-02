@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Anton, Cinzel, Manrope } from "next/font/google";
+import { Onest } from "next/font/google";
 import "./globals.css";
 import TimezoneSync from "./TimezoneSync";
 
-// Anton: heavy poster headlines. Cinzel: carved-stone capitals. Manrope: body text.
-const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton" });
-const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel" });
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
+const onest = Onest({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-onest",
+});
 
 export const metadata: Metadata = {
   title: "Ascend",
@@ -17,10 +18,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${anton.variable} ${cinzel.variable} ${manrope.variable}`}>
+    <html lang="en" className={onest.variable}>
       <body>
-        <div className="pillar pillar-left" aria-hidden="true" />
-        <div className="pillar pillar-right" aria-hidden="true" />
         <TimezoneSync />
         {children}
       </body>

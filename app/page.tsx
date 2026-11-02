@@ -5,10 +5,10 @@ import { getTimeZone } from "../lib/timezone";
 import { getStreakInfo } from "../lib/streak";
 import { greekTitle } from "../lib/greek";
 import RankEmblem from "./RankEmblem";
-import { requireUser } from "../lib/session";
+import { getCurrentUser } from "../lib/session";
+import Landing from "./Landing";
 import { toggleQuest } from "./actions";
 import TopBar from "./TopBar";
-import "./streak.css";
 
 // Always fetch fresh numbers from the database.
 export const dynamic = "force-dynamic";
@@ -27,8 +27,9 @@ export default async function Home({
 }: {
   searchParams: Promise<{ rankup?: string; welcome?: string }>;
 }) {
-  // Not signed in? This sends the visitor to /login.
-  const user = await requireUser();
+  // Not signed in? Show the public landing page instead of the quest board.
+  const user = await getCurrentUser();
+  if (!user) return <Landing />;
   const timeZone = await getTimeZone();
   const today = todayIn(timeZone);
   const { rankup, welcome } = await searchParams;
