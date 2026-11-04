@@ -150,11 +150,9 @@ export default function Landing() {
       <main id="main">
         {/* ---------- Hero ---------- */}
         <section id="home" className="l-hero">
-          <LiquidReveal beforeSrc="/hero/before.jpg" afterSrc="/hero/after.jpg" />
+          <LiquidReveal beforeSrc="/hero/before.png" afterSrc="/hero/after.jpg" />
           <div className="l-hero-veil" />
-          <div className="l-watermark" aria-hidden="true">
-            ASCEND
-          </div>
+          
 
           <div className="l-shell l-hero-grid">
             <div className="l-hero-left">

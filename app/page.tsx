@@ -91,12 +91,9 @@ export default async function Home({
     <main className="dash">
       {/* ---------- Hero: the statue, with the cursor reveal ---------- */}
       <section className="dash-hero">
-        <LiquidReveal beforeSrc="/hero/before.jpg" afterSrc="/hero/after.jpg" />
+        <LiquidReveal beforeSrc="/hero/before.png" afterSrc="/hero/after.jpg" />
         <div className="dash-veil" />
-        <div className="dash-mark" aria-hidden="true">
-          ASCEND
-        </div>
-
+       
         <div className="shell dash-hero-in">
           <TopBar active="quests" />
 
