@@ -538,3 +538,34 @@ export function CountUp({ value, suffix = "" }: { value: number; suffix?: string
     </span>
   );
 }
+
+/* ---------- A number that counts up (on load, and whenever it changes) ---------- */
+
+export function AnimatedNumber({ value }: { value: number }) {
+  const [shown, setShown] = useState(0);
+  const fromRef = useRef(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      fromRef.current = value;
+      setShown(value);
+      return;
+    }
+    const from = fromRef.current;
+    const start = performance.now();
+    const DURATION = 800;
+    let raf = 0;
+    const step = (now: number) => {
+      const t = Math.min((now - start) / DURATION, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const next = Math.round(from + (value - from) * eased);
+      fromRef.current = next;
+      setShown(next);
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [value]);
+
+  return <>{shown.toLocaleString()}</>;
+}

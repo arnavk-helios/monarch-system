@@ -9,6 +9,7 @@ import { getCurrentUser } from "../lib/session";
 import Landing from "./Landing";
 import { toggleQuest } from "./actions";
 import TopBar from "./TopBar";
+import { AnimatedNumber, LiquidReveal, Reveal } from "./_landing/client";
 
 // Always fetch fresh numbers from the database.
 export const dynamic = "force-dynamic";
@@ -84,109 +85,155 @@ export default async function Home({
     return acc;
   }, {});
 
+  const delay = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
+
   return (
-    <main className="shell">
-      <TopBar active="quests" />
+    <main className="dash">
+      {/* ---------- Hero: the statue, with the cursor reveal ---------- */}
+      <section className="dash-hero">
+        <LiquidReveal beforeSrc="/hero/before.jpg" afterSrc="/hero/after.jpg" />
+        <div className="dash-veil" />
+        <div className="dash-mark" aria-hidden="true">
+          ASCEND
+        </div>
 
-      {welcome && (
-        <section className="honor" aria-label="A reminder">
-          <p className="honor-text">
-            Play honest. Log only what you truly did. Cheating the board only cheats you, so be
-            real with yourself and the climb will be real too.
-          </p>
-          <Link href="/" className="honor-btn">
-            I will
-          </Link>
-        </section>
-      )}
+        <div className="shell dash-hero-in">
+          <TopBar active="quests" />
 
-      <section className="status" aria-label="Your rank">
-        <RankEmblem name={rank.current.name} size={116} />
+          <Reveal delay={100} y={10}>
+            <p className="dash-kicker">Welcome back, {user.name}</p>
+          </Reveal>
 
-        <div className="status-body">
-          <p className="hunter">{user.name}</p>
-          <p className="rank-title">{greekTitle(rank.current.name)}</p>
-          <p className="rank-label">Rank {rank.current.name}</p>
-          <div
-            className="bar"
-            role="progressbar"
-            aria-label="Progress to next rank"
-            aria-valuenow={rank.percent}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          >
-            <div className="bar-fill" style={{ width: `${rank.percent}%` }} />
-          </div>
-          <p className="xp-line">
-            <strong>{totalXp.toLocaleString()} XP total</strong>
-            <span>
-              {rank.next
-                ? `${(rank.xpForNextRank - rank.xpIntoRank).toLocaleString()} XP to rank ${rank.next.name}`
-                : "Top rank reached"}
-            </span>
-          </p>
+          <Reveal plain>
+            <h1 className="dash-title lines">
+              <span className="line">
+                <span className="line-in" style={delay(150)}>
+                  Quest
+                </span>
+              </span>
+              <span className="line">
+                <span className="line-in" style={delay(270)}>
+                  board
+                </span>
+              </span>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={400} y={12}>
+            <div className="dash-today">
+              <div
+                className="bar small"
+                role="progressbar"
+                aria-label="XP earned today"
+                aria-valuenow={dailyPercent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div className="bar-fill" style={{ width: `${dailyPercent}%` }} />
+              </div>
+              <p className="today-line">
+                <AnimatedNumber value={dailyXp} /> of {dailyMax} XP earned today
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      <section className={`streak ${streak.state}`} aria-label="Your streak">
-        <div className="streak-count">
-          <strong>{streak.streak}</strong>
-          <span>day streak</span>
-        </div>
-        <p className="streak-text">{streakMessages[streak.state]}</p>
-      </section>
+      {/* ---------- Everything below slides in as you scroll ---------- */}
+      <div className="shell dash-body">
+        {welcome && (
+          <section className="honor" aria-label="A reminder">
+            <p className="honor-text">
+              Play honest. Log only what you truly did. Cheating the board only cheats you, so be
+              real with yourself and the climb will be real too.
+            </p>
+            <Link href="/" className="honor-btn">
+              I will
+            </Link>
+          </section>
+        )}
 
-      <header className="board-head">
-        <h1>Quest board</h1>
-        <div
-          className="bar small"
-          role="progressbar"
-          aria-label="XP earned today"
-          aria-valuenow={dailyPercent}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        >
-          <div className="bar-fill" style={{ width: `${dailyPercent}%` }} />
-        </div>
-        <p className="today-line">
-          {dailyXp} of {dailyMax} XP earned today
-        </p>
-      </header>
+        <Reveal delay={150} y={30}>
+          <section className="status" aria-label="Your rank">
+            <RankEmblem name={rank.current.name} size={116} />
 
-      {Object.entries(groups).map(([category, items]) => (
-        <section className="group" key={category}>
-          <h2>{CATEGORY_LABELS[category] ?? category}</h2>
-          <ul className="quests">
-            {items.map((quest) => {
-              const done = doneIds.has(quest.id);
-              return (
-                <li key={quest.id}>
-                  <form action={toggleQuest}>
-                    <input type="hidden" name="questId" value={quest.id} />
-                    <input type="hidden" name="done" value={String(done)} />
-                    <button type="submit" className="quest" aria-pressed={done}>
-                      <span className="check" aria-hidden="true">
-                        <svg viewBox="0 0 16 16" width="14" height="14">
-                          <path
-                            d="M3 8.5l3 3 7-7"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
-                      <span className="q-name">{quest.name}</span>
-                      <span className="q-xp">+{quest.xp} XP</span>
-                    </button>
-                  </form>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      ))}
+            <div className="status-body">
+              <p className="hunter">{user.name}</p>
+              <p className="rank-title">{greekTitle(rank.current.name)}</p>
+              <p className="rank-label">Rank {rank.current.name}</p>
+              <div
+                className="bar"
+                role="progressbar"
+                aria-label="Progress to next rank"
+                aria-valuenow={rank.percent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div className="bar-fill" style={{ width: `${rank.percent}%` }} />
+              </div>
+              <p className="xp-line">
+                <strong>
+                  <AnimatedNumber value={totalXp} /> XP total
+                </strong>
+                <span>
+                  {rank.next
+                    ? `${(rank.xpForNextRank - rank.xpIntoRank).toLocaleString()} XP to rank ${rank.next.name}`
+                    : "Top rank reached"}
+                </span>
+              </p>
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={250} y={24}>
+          <section className={`streak ${streak.state}`} aria-label="Your streak">
+            <div className="streak-count">
+              <strong>
+                <AnimatedNumber value={streak.streak} />
+              </strong>
+              <span>day streak</span>
+            </div>
+            <p className="streak-text">{streakMessages[streak.state]}</p>
+          </section>
+        </Reveal>
+
+        {Object.entries(groups).map(([category, items], index) => (
+          <Reveal key={category} delay={index * 80} y={24}>
+            <section className="group">
+              <h2>{CATEGORY_LABELS[category] ?? category}</h2>
+              <ul className="quests">
+                {items.map((quest) => {
+                  const done = doneIds.has(quest.id);
+                  return (
+                    <li key={quest.id}>
+                      <form action={toggleQuest}>
+                        <input type="hidden" name="questId" value={quest.id} />
+                        <input type="hidden" name="done" value={String(done)} />
+                        <button type="submit" className="quest" aria-pressed={done}>
+                          <span className="check" aria-hidden="true">
+                            <svg viewBox="0 0 16 16" width="14" height="14">
+                              <path
+                                d="M3 8.5l3 3 7-7"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                          <span className="q-name">{quest.name}</span>
+                          <span className="q-xp">+{quest.xp} XP</span>
+                        </button>
+                      </form>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          </Reveal>
+        ))}
+      </div>
 
       {rankUp && (
         <div className="rankup" role="dialog" aria-modal="true" aria-labelledby="rankup-title">

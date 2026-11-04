@@ -216,3 +216,33 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- Dashboard hero: statue, cursor reveal, entrance motion ---------- */
+.reveal { opacity: 0; transform: translateY(var(--y, 20px)); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); transition-delay: var(--d, 0ms); }
+.reveal.plain { opacity: 1; transform: none; transition: none; }
+.dash .reveal.in { opacity: 1; transform: none; }
+.lines .line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.lines .line-in { display: block; transform: translateY(105%); transition: transform 0.9s cubic-bezier(0.215, 0.61, 0.355, 1); transition-delay: var(--d, 0ms); }
+.dash .reveal.in .line-in { transform: none; }
+
+.l-liquid { position: absolute; inset: 0; z-index: 0; }
+.l-liquid img, .l-liquid canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.l-liquid img { object-fit: cover; }
+.l-liquid canvas { pointer-events: none; }
+
+.dash-hero { position: relative; isolation: isolate; overflow: hidden; min-height: min(72vh, 34rem); border-radius: 0 0 2rem 2rem; background: #c9c9c9; }
+.dash-veil { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.1) 55%, rgba(255, 255, 255, 0.4)); }
+.dash-mark { position: absolute; inset-inline: 0; bottom: 3.5rem; z-index: 1; text-align: center; user-select: none; pointer-events: none; font-weight: 700; line-height: 1; font-size: clamp(5rem, 16vw, 11rem); color: rgba(255, 255, 255, 0.45); animation: mark-in 1.2s var(--ease) 0.3s backwards; }
+.dash-hero-in { position: relative; z-index: 20; padding-block: 1.5rem 7rem; }
+.dash-hero-in .topbar { border-bottom-color: rgba(17, 17, 17, 0.14); }
+.dash-kicker { margin: 0 0 0.75rem; font-size: 0.95rem; font-weight: 500; color: rgba(17, 17, 17, 0.7); }
+.dash-title { max-width: 14ch; margin: 0 0 1.25rem; font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 0.96; letter-spacing: -0.035em; }
+.dash-today { max-width: 22rem; }
+.dash-today .bar.small { background: rgba(17, 17, 17, 0.12); }
+.dash-today .today-line { font-weight: 500; color: rgba(17, 17, 17, 0.7); }
+.dash-body { position: relative; z-index: 2; margin-top: -3.5rem; padding-top: 0; }
+.dash-body .streak { margin: 1rem 0 2rem; }
+
+@keyframes mark-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes grow { from { width: 0; } }
+.status .bar-fill, .dash-today .bar-fill { animation: grow 0.9s var(--ease) 0.2s backwards; }
